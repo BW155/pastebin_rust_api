@@ -1,0 +1,6 @@
+[package]
+name = "pastebin_rust_api"
+version = "0.1.0"
+authors = ["DerUberCatman <b.wisman155@gmail.com>"]
+
+[dependencies]
