@@ -4,10 +4,10 @@ pub enum Access {
     PRIVATE,
 }
 
-pub fn get_access(access: &Access) -> i64 {
+pub fn get_access(access: &Access) -> &str {
     match access {
-        &Access::PUBLIC => 0,
-        &Access::UNLISTED => 1,
-        &Access::PRIVATE => 2,
+        &Access::PUBLIC => "0",
+        &Access::UNLISTED => "1",
+        &Access::PRIVATE => "2",
     }
 }
