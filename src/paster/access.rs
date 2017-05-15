@@ -1,13 +1,13 @@
 pub enum Access {
-    PUBLIC,
-    UNLISTED,
-    PRIVATE,
+    Public,
+    Unlisted,
+    Private,
 }
 
 pub fn get_access(access: &Access) -> &str {
     match access {
-        &Access::PUBLIC => "0",
-        &Access::UNLISTED => "1",
-        &Access::PRIVATE => "2",
+        &Access::Public => "0",
+        &Access::Unlisted => "1",
+        &Access::Private => "2",
     }
 }
