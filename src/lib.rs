@@ -1,7 +1,7 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        println!("IT WORKS");
-    }
+
+pub mod paster;
+
+
+fn construct_api_url(path: &[&str]) -> String {
+    format!("https://pastebin.com/api/{}", path.join("/"))
 }
