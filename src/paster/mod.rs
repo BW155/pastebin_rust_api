@@ -6,6 +6,7 @@ use objects::PastebinMessage;
 
 use std::io::Read;
 use std::error::Error;
+use std::env;
 
 pub mod access;
 
