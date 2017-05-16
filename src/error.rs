@@ -8,7 +8,6 @@ use objects::PastebinMessage;
 pub type Result<T> = result::Result<T, Error>;
 
 /// The Errors which may occur when using the Pastebin Rust API.
-
 #[derive(Debug)]
 pub enum Error {
     Io(io::Error),

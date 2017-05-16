@@ -57,6 +57,6 @@ impl Paster {
         assert!(res.status().is_success());
         let mut result: String = String::new();
         res.read_to_string(&mut result)?;
-        check_for_error(result)
+        Ok(check_for_error(result)?)
     }
 }
