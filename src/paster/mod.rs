@@ -44,6 +44,7 @@ impl Paster {
                       ("api_paste_format", format),
                       ("api_dev_key", dev_key),
                       ("api_paste_code", code)];
+
         self.send_post_request(&url, &params)
     }
 
