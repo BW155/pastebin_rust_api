@@ -6,10 +6,14 @@ pub enum Access {
 }
 
 /// method for getting the right string for the `Access` enum.
-pub fn get_access(access: &Access) -> &str {
-    match access {
-        &Access::Public => "0",
-        &Access::Unlisted => "1",
-        &Access::Private => "2",
+pub fn get_access(access: Option<&Access>) -> &str {
+    if let Some(access) = access {
+        return match access {
+            &Access::Public => "0",
+            &Access::Unlisted => "1",
+            &Access::Private => "2",
+        };
+    } else {
+        return "";
     }
 }
