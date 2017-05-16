@@ -11,10 +11,10 @@
 //! // I recommend to put your dev key into an environment variable called `PASTEBIN_DEVELOPER_TOKEN`.
 //! let parser = Paster::new(Some("<YOUR DEV KEY>".to_owned()));
 //! let response = parser.paste("<html></html>",
-//!                             &Access::Private,
-//!                             "TestHtml",
-//!                             &Expiration::TenMinutes,
-//!                             &Format::HTML5,
+//!                             Some(&Access::Private),
+//!                             Some("TestHtml"),
+//!                             Some(&Expiration::TenMinutes),
+//!                             Some(&Format::HTML5),
 //!                             None);
 //! if response.is_ok() {
 //!     if let Some(paste) = response.ok() {
