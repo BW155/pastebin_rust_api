@@ -10,7 +10,6 @@ pub type Result<T> = result::Result<T, Error>;
 /// The Errors which may occur when using the Pastebin Rust API.
 
 #[derive(Debug)]
-
 pub enum Error {
     Io(io::Error),
     HttpError(reqwest::Error),
@@ -38,7 +37,7 @@ impl From<reqwest::Error> for Error {
 }
 
 pub fn check_for_error(result: String) -> Result<PastebinMessage> {
-    if result.starts_with("Bad API request") {
+    if result.starts_with("Bad API request") || result.starts_with("Post limit") {
         Err(Error::PasteBinError(result))
     } else {
         Ok(PastebinMessage {url: result})

@@ -7,7 +7,7 @@ pub use self::paster::access::Access;
 pub use self::paster::format::Format;
 
 mod paster;
-mod objects;
+pub mod objects;
 mod error;
 
 

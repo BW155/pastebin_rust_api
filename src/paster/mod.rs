@@ -30,13 +30,14 @@ impl Paster {
         }
     }
 
-    pub fn paste(&self, code: &str, access: &Access, name: &str, expiration: &Expiration, format: &Format, user_key: &str) -> Result<PastebinMessage> {
+    pub fn paste(&self, code: &str, access: &Access, name: &str, expiration: &Expiration, format: &Format, user_key: Option<&str>) -> Result<PastebinMessage> {
         let path = ["api_post.php"];
         let url = construct_api_url(&path);
         let access = get_access(access);
         let expiration = get_expiration(expiration);
         let format = get_format(format);
         let dev_key = &self.developer_key;
+        let user_key = user_key.unwrap_or("");
 
         let params = [("api_option", "paste"),
                       ("api_user_key", user_key),
