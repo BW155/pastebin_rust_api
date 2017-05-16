@@ -4,7 +4,6 @@ version = "0.1.0"
 authors = ["DerUberCatman <b.wisman155@gmail.com>"]
 exclude = ["tools"]
 publish = true
-documentation = "./target/doc/pastebin_rust_api/index.html"
 repository = "https://github.com/TheUberCatman/pastebin_rust_api"
 description = "Library for posting content to pastebin.com"
 license = "Apache-2.0"
