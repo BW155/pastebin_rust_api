@@ -5,6 +5,7 @@ pub use self::objects::PastebinMessage;
 pub use self::paster::expiration::Expiration;
 pub use self::paster::access::Access;
 pub use self::paster::format::Format;
+pub use self::error::Error;
 
 mod paster;
 pub mod objects;
