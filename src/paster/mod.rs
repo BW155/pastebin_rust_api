@@ -56,7 +56,22 @@ impl Paster {
                       ("api_paste_format", format),
                       ("api_dev_key", dev_key),
                       ("api_paste_code", code)];
+        self.send_post_request(&url, &params)
+    }
 
+    pub fn login(&self, username: Option<String>, password: Option<String>) -> Result<PastebinMessage> {
+        let path = ["api_login.php"];
+        let url = construct_api_url(&path);
+        let dev_key: &str = &self.developer_key;
+        let username = &username.or_else(|| env::var("PASTEBIN_USER_NAME").ok())
+            .expect("You should pass in a username or set the PASTEBIN_USER_NAME env var");
+        let password = &password.or_else(|| env::var("PASTEBIN_USER_PASSWORD").ok())
+            .expect("You should pass in a password or set the PASTEBIN_USER_PASSWORD env var");
+
+
+        let params = [("api_dev_key", dev_key),
+                      ("api_user_name", username),
+                      ("api_user_password", password)];
         self.send_post_request(&url, &params)
     }
 
