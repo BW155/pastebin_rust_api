@@ -3,6 +3,8 @@ use std::{io, result};
 use reqwest;
 use reqwest::StatusCode;
 
+use objects::PastebinMessage;
+
 pub type Result<T> = result::Result<T, Error>;
 
 /// The Errors which may occur when using the Pastebin Rust API.
@@ -16,6 +18,7 @@ pub enum Error {
     RequestError(reqwest::Error),
     /// Contains the status code of the request
     RequestFailed(StatusCode),
+    PasteBinError(String),
 }
 
 impl From<io::Error> for Error {
@@ -31,5 +34,13 @@ impl From<reqwest::Error> for Error {
             reqwest::Error::Serialize(..) => Error::SerializeError(err),
             _ => Error::RequestError(err),
         }
+    }
+}
+
+pub fn check_for_error(result: String) -> Result<PastebinMessage> {
+    if result.starts_with("Bad API request") {
+        Err(Error::PasteBinError(result))
+    } else {
+        Ok(PastebinMessage {url: result})
     }
 }

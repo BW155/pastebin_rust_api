@@ -13,7 +13,7 @@ pub mod access;
 pub mod expiration;
 
 
-use error::{Result};
+use error::{Result, check_for_error};
 
 pub struct Paster {
     developer_key: String,
@@ -52,9 +52,8 @@ impl Paster {
         let client = reqwest::Client::new().unwrap();
         let mut res = client.post(url).form(&params).send()?;
         assert!(res.status().is_success());
-        let mut result = String::new();
+        let mut result: String = String::new();
         res.read_to_string(&mut result);
-        let message = PastebinMessage { url: result };
-        Ok(message)
+        check_for_error(result)
     }
 }
