@@ -16,21 +16,29 @@ pub mod format;
 
 use error::{Result, check_for_error};
 
+/// Represents an Paster object for executing pastes.
 pub struct Paster {
     developer_key: String,
 }
 
 impl Paster {
+    /// Constructs a new `Paster` object.
     pub fn new(developer_key: Option<String>) -> Self {
         let developer_key =
             developer_key.or_else(|| env::var("PASTEBIN_DEVELOPER_TOKEN").ok())
                          .expect("You should pass in a token to new or set the PASTEBIN_DEVELOPER_TOKEN env var");
-        Paster {
-            developer_key: developer_key,
-        }
+        Paster { developer_key: developer_key }
     }
 
-    pub fn paste(&self, code: &str, access: &Access, name: &str, expiration: &Expiration, format: &Format, user_key: Option<&str>) -> Result<PastebinMessage> {
+    /// Pastes your content to pastebin.
+    pub fn paste(&self,
+                 code: &str,
+                 access: &Access,
+                 name: &str,
+                 expiration: &Expiration,
+                 format: &Format,
+                 user_key: Option<&str>)
+                 -> Result<PastebinMessage> {
         let path = ["api_post.php"];
         let url = construct_api_url(&path);
         let access = get_access(access);
@@ -51,6 +59,7 @@ impl Paster {
         self.send_post_request(&url, &params)
     }
 
+    /// sends pastebin request, returns `PastebinMessage` on succeed or an `Error` on fail.
     fn send_post_request(&self, url: &str, params: &[(&str, &str)]) -> Result<PastebinMessage> {
         let client = reqwest::Client::new().unwrap();
         let mut res = client.post(url).form(&params).send()?;

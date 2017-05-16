@@ -10,8 +10,17 @@ mod tests {
     #[test]
     fn test_post() {
         let parser = Paster::new(Some("e27fc5e3a33b4a5e7b509e9d06723fcc".to_owned()));
-        let response = parser.paste("<html></html>", &Access::Private, "TestHtml", &Expiration::TenMinutes, &Format::HTML5, None);
+        let response = parser.paste("<html></html>",
+                                    &Access::Private,
+                                    "TestHtml",
+                                    &Expiration::TenMinutes,
+                                    &Format::HTML5,
+                                    None);
         assert!(response.is_ok());
-        println!("url: {}", response.ok().unwrap().url);
+        if response.is_ok() {
+            if let Some(paste) = response.ok() {
+                println!("{}", paste.url);
+            }
+        }
     }
 }

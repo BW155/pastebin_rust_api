@@ -39,6 +39,6 @@ pub fn check_for_error(result: String) -> Result<PastebinMessage> {
     if result.starts_with("Bad API request") || result.starts_with("Post limit") {
         Err(Error::PasteBinError(result))
     } else {
-        Ok(PastebinMessage {url: result})
+        Ok(PastebinMessage { url: result })
     }
 }

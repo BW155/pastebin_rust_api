@@ -1,8 +1,9 @@
+/// Represents an format enum for all compatible formats pastebin has.
 pub enum Format {
     CS4,
     ACMECrossAssembler6502,
     KickAssembler6502,
-    TASM64TASS6502 ,
+    TASM64TASS6502,
     ABAP,
     ActionScript,
     ActionScript3,
