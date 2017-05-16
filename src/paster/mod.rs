@@ -1,6 +1,7 @@
 use reqwest;
 
 use self::access::{Access, get_access};
+use self::expiration::{Expiration, get_expiration};
 use construct_api_url;
 use objects::PastebinMessage;
 
@@ -9,6 +10,7 @@ use std::error::Error;
 use std::env;
 
 pub mod access;
+pub mod expiration;
 
 
 use error::{Result};
@@ -27,17 +29,18 @@ impl Paster {
         }
     }
 
-    pub fn paste(&self, code: &str, access: &Access, name: &str, expire_date: &str, format: &str, user_key: &str) -> Result<PastebinMessage> {
+    pub fn paste(&self, code: &str, access: &Access, name: &str, expiration: &Expiration, format: &str, user_key: &str) -> Result<PastebinMessage> {
         let path = ["api_post.php"];
         let url = construct_api_url(&path);
         let access = get_access(access);
+        let expiration = get_expiration(expiration);
         let dev_key = &self.developer_key;
 
         let params = [("api_option", "paste"),
                       ("api_user_key", user_key),
                       ("api_paste_private", access),
                       ("api_paste_name", name),
-                      ("api_expire_date", expire_date),
+                      ("api_expire_date", expiration),
                       ("api_parse_format", format),
                       ("api_dev_key", dev_key),
                       ("api_paste_code", code)];

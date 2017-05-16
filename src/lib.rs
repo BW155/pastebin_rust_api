@@ -1,7 +1,12 @@
 extern crate reqwest;
 
-pub mod paster;
-pub mod objects;
+pub use self::paster::Paster;
+pub use self::objects::PastebinMessage;
+pub use self::paster::expiration::Expiration;
+pub use self::paster::access::Access;
+
+mod paster;
+mod objects;
 mod error;
 
 
