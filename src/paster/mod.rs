@@ -7,7 +7,6 @@ use construct_api_url;
 use objects::PastebinMessage;
 
 use std::io::Read;
-use std::error::Error;
 use std::env;
 
 pub mod access;
@@ -56,7 +55,7 @@ impl Paster {
         let mut res = client.post(url).form(&params).send()?;
         assert!(res.status().is_success());
         let mut result: String = String::new();
-        res.read_to_string(&mut result);
+        res.read_to_string(&mut result)?;
         check_for_error(result)
     }
 }
