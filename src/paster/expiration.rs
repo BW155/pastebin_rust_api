@@ -1,3 +1,4 @@
+/// Represents an enum of all possible expiration times.
 pub enum Expiration {
     Never,
     TenMinutes,
