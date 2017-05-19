@@ -3,7 +3,6 @@
 
 with open('values.txt', 'r') as myfile:
     data = myfile.read()
-    print(data)
     data = data.split("\n")
     for d in data:
         result = d.split(" = ")
