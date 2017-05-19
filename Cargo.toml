@@ -1,6 +1,6 @@
 [package]
 name = "pastebin_rust_api"
-version = "0.1.11"
+version = "0.2.11"
 authors = ["DerUberCatman <b.wisman155@gmail.com>"]
 exclude = ["tools"]
 publish = true
@@ -9,4 +9,4 @@ description = "Library for posting content to pastebin.com"
 license = "Apache-2.0"
 
 [dependencies]
-reqwest = "0.4.0"
+reqwest = "0.5.2"
