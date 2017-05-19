@@ -47,4 +47,19 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_file_post() {
+        let paster = Paster::new(None);
+        let response = paster.paste_from_file("test.html",
+                                              Some(&Access::Private),
+                                              Some("TestHtml"),
+                                              Some(&Expiration::TenMinutes),
+                                              Some(&Format::HTML5),
+                                              None);
+        assert!(response.is_ok());
+        if let Some(message) = response.ok() {
+            println!("URL: {}", message.content);
+        }
+    }
 }

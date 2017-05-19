@@ -8,13 +8,14 @@ use objects::PastebinMessage;
 
 use std::io::Read;
 use std::env;
+use std::fs::File;
 
 pub mod access;
 pub mod expiration;
 pub mod format;
 
 
-use error::{Result, check_for_error};
+use error::{Result, check_for_error, Error};
 
 /// Represents an Paster object for executing pastes.
 pub struct Paster {
@@ -28,6 +29,20 @@ impl Paster {
             developer_key.or_else(|| env::var("PASTEBIN_DEVELOPER_TOKEN").ok())
                          .expect("You should pass in a token to new or set the PASTEBIN_DEVELOPER_TOKEN env var");
         Paster { developer_key: developer_key }
+    }
+
+    pub fn paste_from_file(&self,
+                           file_path: &str,
+                           access: Option<&Access>,
+                           name: Option<&str>,
+                           expiration: Option<&Expiration>,
+                           format: Option<&Format>,
+                           user_key: Option<&str>)
+                            -> Result<PastebinMessage> {
+        let mut f = File::open(file_path)?;
+        let mut code = String::new();
+        f.read_to_string(&mut code)?;
+        self.paste(&code, access, name, expiration, format, user_key)
     }
 
     /// Pastes your content to pastebin.
