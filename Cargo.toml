@@ -10,3 +10,4 @@ license = "Apache-2.0"
 
 [dependencies]
 reqwest = "0.5.2"
+treexml = "0.3.0"
