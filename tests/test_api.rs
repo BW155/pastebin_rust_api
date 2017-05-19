@@ -8,7 +8,7 @@ mod tests {
     fn test_post() {
         let paster = Paster::new(None);
         let response = paster.paste("<html></html>",
-                                    Some(&Access::Private),
+                                    Some(&Access::Unlisted),
                                     Some("TestHtml"),
                                     Some(&Expiration::TenMinutes),
                                     Some(&Format::HTML5),
@@ -36,7 +36,7 @@ mod tests {
         assert!(user_key_response.is_ok());
         if let Some(user_key) = user_key_response.ok() {
             let url_response = paster.paste("<html></html>",
-                                            Some(&Access::Private),
+                                            Some(&Access::Unlisted),
                                             Some("TestHtml"),
                                             Some(&Expiration::TenMinutes),
                                             Some(&Format::HTML5),
@@ -52,7 +52,7 @@ mod tests {
     fn test_file_post() {
         let paster = Paster::new(None);
         let response = paster.paste_from_file("test.html",
-                                              Some(&Access::Private),
+                                              Some(&Access::Unlisted),
                                               Some("TestHtml"),
                                               Some(&Expiration::TenMinutes),
                                               Some(&Format::HTML5),
