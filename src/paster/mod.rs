@@ -32,6 +32,7 @@ impl Paster {
         Paster { developer_key: developer_key }
     }
 
+    /// Pastes the content of your file to pastebin.
     pub fn paste_from_file(&self,
                            file_path: &str,
                            access: Option<&Access>,
@@ -75,6 +76,7 @@ impl Paster {
         self.send_post_request(&url, &params)
     }
 
+    /// Logs in to pastebin and returns user_key that can be used for pasting.
     pub fn login(&self,
                  username: Option<String>,
                  password: Option<String>)
