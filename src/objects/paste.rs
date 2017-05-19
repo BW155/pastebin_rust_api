@@ -22,7 +22,8 @@ impl Paste {
                format_short: String,
                format_long: String,
                url: String,
-               hits: String) -> Self {
+               hits: String)
+               -> Self {
         let date = date.parse::<i64>().unwrap_or(0);
         let size = size.parse::<i64>().unwrap_or(0);
         let expire_date = expire_date.parse::<i64>().unwrap_or(0);

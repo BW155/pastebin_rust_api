@@ -94,7 +94,6 @@ impl Paster {
                  .or_else(|| env::var("PASTEBIN_USER_PASSWORD").ok())
                  .expect("You should pass in a password or set the PASTEBIN_USER_PASSWORD env var");
 
-
         let params = [("api_dev_key", dev_key),
                       ("api_user_name", username),
                       ("api_user_password", password)];
@@ -107,10 +106,10 @@ impl Paster {
         let url = construct_api_url(&path);
         let dev_key: &str = &self.developer_key;
 
-        let params = [("api_option", "trends"),
-                      ("api_dev_key", dev_key)];
+        let params = [("api_option", "trends"), ("api_dev_key", dev_key)];
         let mut xml: String = self.send_post_request(&url, &params)
-                                .map(|c| c.content).unwrap_or(String::new());
+            .map(|c| c.content)
+            .unwrap_or(String::new());
         xml.insert_str(0, "<root>");
         xml.push_str("</root>");
         let doc = Document::parse(xml.as_bytes()).unwrap_or(Document::new());
@@ -118,35 +117,45 @@ impl Paster {
         let mut pastes = Vec::new();
         for i in root.children {
             let key = i.find_child(|e| e.name == "paste_key")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let date = i.find_child(|e| e.name == "paste_date")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let title = i.find_child(|e| e.name == "paste_date")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let size = i.find_child(|e| e.name == "paste_size")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let expire = i.find_child(|e| e.name == "paste_expire_date")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let private = i.find_child(|e| e.name == "paste_private")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let format_short = i.find_child(|e| e.name == "paste_format_short")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let format_long = i.find_child(|e| e.name == "paste_format_long")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let url = i.find_child(|e| e.name == "paste_url")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let hits = i.find_child(|e| e.name == "paste_hits")
-                        .map(|k| k.clone())
-                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+                .map(|k| k.clone())
+                .map(|k| k.text.unwrap_or(String::new()))
+                .unwrap();
             let paste = Paste::new(key,
                                    date,
                                    title,
