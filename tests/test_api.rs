@@ -62,4 +62,14 @@ mod tests {
             println!("URL: {}", message.content);
         }
     }
+
+    #[test]
+    fn test_trending() {
+        let paster = Paster::new(None);
+        let trending = paster.get_trending_posts();
+        assert!(trending.is_ok());
+        if let Some(trending) = trending.ok() {
+            println!("URL: {}", trending[0].url);
+        }
+    }
 }
