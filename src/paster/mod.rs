@@ -1,10 +1,11 @@
 use reqwest;
+use treexml::Document;
 
 use self::access::{Access, get_access};
 use self::expiration::{Expiration, get_expiration};
 use self::format::{Format, get_format};
 use construct_api_url;
-use objects::PastebinMessage;
+use objects::{PastebinMessage, Paste};
 
 use std::io::Read;
 use std::env;
@@ -98,6 +99,67 @@ impl Paster {
                       ("api_user_name", username),
                       ("api_user_password", password)];
         self.send_post_request(&url, &params)
+    }
+
+    /// Returns Vector of Paste objects
+    pub fn get_trending_posts(&self) -> Result<Vec<Paste>> {
+        let path = ["api_post.php"];
+        let url = construct_api_url(&path);
+        let dev_key: &str = &self.developer_key;
+
+        let params = [("api_option", "trends"),
+                      ("api_dev_key", dev_key)];
+        let mut xml: String = self.send_post_request(&url, &params)
+                                .map(|c| c.content).unwrap_or(String::new());
+        xml.insert_str(0, "<root>");
+        xml.push_str("</root>");
+        let doc = Document::parse(xml.as_bytes()).unwrap_or(Document::new());
+        let root = doc.root.unwrap();
+        let mut pastes = Vec::new();
+        for i in root.children {
+            let key = i.find_child(|e| e.name == "paste_key")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let date = i.find_child(|e| e.name == "paste_date")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let title = i.find_child(|e| e.name == "paste_date")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let size = i.find_child(|e| e.name == "paste_size")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let expire = i.find_child(|e| e.name == "paste_expire_date")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let private = i.find_child(|e| e.name == "paste_private")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let format_short = i.find_child(|e| e.name == "paste_format_short")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let format_long = i.find_child(|e| e.name == "paste_format_long")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let url = i.find_child(|e| e.name == "paste_url")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let hits = i.find_child(|e| e.name == "paste_hits")
+                        .map(|k| k.clone())
+                        .map(|k| k.text.unwrap_or(String::new())).unwrap();
+            let paste = Paste::new(key,
+                                   date,
+                                   title,
+                                   size,
+                                   expire,
+                                   private,
+                                   format_short,
+                                   format_long,
+                                   url,
+                                   hits);
+            pastes.push(paste);
+        }
+        Ok(pastes)
     }
 
     /// sends pastebin request, returns `PastebinMessage` on succeed or an `Error` on fail.
