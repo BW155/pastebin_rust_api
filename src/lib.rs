@@ -33,6 +33,7 @@
 //!
 
 extern crate reqwest;
+extern crate treexml;
 
 pub use self::paster::Paster;
 pub use self::paster::format::Format;
