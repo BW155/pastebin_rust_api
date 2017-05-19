@@ -36,11 +36,11 @@ mod tests {
         assert!(user_key_response.is_ok());
         if let Some(user_key) = user_key_response.ok() {
             let url_response = paster.paste("<html></html>",
-                                        Some(&Access::Private),
-                                        Some("TestHtml"),
-                                        Some(&Expiration::TenMinutes),
-                                        Some(&Format::HTML5),
-                                        Some(&user_key.content));
+                                            Some(&Access::Private),
+                                            Some("TestHtml"),
+                                            Some(&Expiration::TenMinutes),
+                                            Some(&Format::HTML5),
+                                            Some(&user_key.content));
             assert!(url_response.is_ok());
             if let Some(message) = url_response.ok() {
                 println!("URL: {}", message.content);

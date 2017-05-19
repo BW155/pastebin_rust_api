@@ -15,7 +15,7 @@ pub mod expiration;
 pub mod format;
 
 
-use error::{Result, check_for_error, Error};
+use error::{Result, check_for_error};
 
 /// Represents an Paster object for executing pastes.
 pub struct Paster {
@@ -26,8 +26,9 @@ impl Paster {
     /// Constructs a new `Paster` object.
     pub fn new(developer_key: Option<String>) -> Self {
         let developer_key =
-            developer_key.or_else(|| env::var("PASTEBIN_DEVELOPER_TOKEN").ok())
-                         .expect("You should pass in a token to new or set the PASTEBIN_DEVELOPER_TOKEN env var");
+            developer_key
+                .or_else(|| env::var("PASTEBIN_DEVELOPER_TOKEN").ok())
+                .expect("Environment variable 'PASTEBIN_DEVELOPER_TOKEN' not found");
         Paster { developer_key: developer_key }
     }
 
@@ -38,7 +39,7 @@ impl Paster {
                            expiration: Option<&Expiration>,
                            format: Option<&Format>,
                            user_key: Option<&str>)
-                            -> Result<PastebinMessage> {
+                           -> Result<PastebinMessage> {
         let mut f = File::open(file_path)?;
         let mut code = String::new();
         f.read_to_string(&mut code)?;
@@ -56,10 +57,10 @@ impl Paster {
                  -> Result<PastebinMessage> {
         let path = ["api_post.php"];
         let url = construct_api_url(&path);
-        let access = get_access(access);
         let name = name.unwrap_or("");
-        let expiration = get_expiration(expiration);
-        let format = get_format(format);
+        let access = access.map(|a| get_access(a)).unwrap_or("");
+        let expiration = expiration.map(|e| get_expiration(e)).unwrap_or("");
+        let format = format.map(|f| get_format(f)).unwrap_or("");
         let dev_key = &self.developer_key;
         let user_key = user_key.unwrap_or("");
 
@@ -74,14 +75,21 @@ impl Paster {
         self.send_post_request(&url, &params)
     }
 
-    pub fn login(&self, username: Option<String>, password: Option<String>) -> Result<PastebinMessage> {
+    pub fn login(&self,
+                 username: Option<String>,
+                 password: Option<String>)
+                 -> Result<PastebinMessage> {
         let path = ["api_login.php"];
         let url = construct_api_url(&path);
         let dev_key: &str = &self.developer_key;
-        let username = &username.or_else(|| env::var("PASTEBIN_USER_NAME").ok())
-            .expect("You should pass in a username or set the PASTEBIN_USER_NAME env var");
-        let password = &password.or_else(|| env::var("PASTEBIN_USER_PASSWORD").ok())
-            .expect("You should pass in a password or set the PASTEBIN_USER_PASSWORD env var");
+        let username =
+            &username
+                 .or_else(|| env::var("PASTEBIN_USER_NAME").ok())
+                 .expect("You should pass in a username or set the PASTEBIN_USER_NAME env var");
+        let password =
+            &password
+                 .or_else(|| env::var("PASTEBIN_USER_PASSWORD").ok())
+                 .expect("You should pass in a password or set the PASTEBIN_USER_PASSWORD env var");
 
 
         let params = [("api_dev_key", dev_key),

@@ -12,7 +12,8 @@
 //! use pastebin_rust_api::{Paster, Access, Format, Expiration};
 //!
 //! fn main() {
-//!     // I recommend to put your dev key into an environment variable called `PASTEBIN_DEVELOPER_TOKEN`.
+//!     // I recommend to put your dev key into an environment variable called
+//!     // `PASTEBIN_DEVELOPER_TOKEN`.
 //!     let parser = Paster::new(Some("<YOUR DEV KEY>".to_owned()));
 //!     let response = parser.paste("<html></html>",
 //!                                 Some(&Access::Private),
