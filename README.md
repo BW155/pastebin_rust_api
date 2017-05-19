@@ -1,6 +1,10 @@
  # Pastebin Rust Api
 
  Wrapper for the [Pastebin Api](https://pastebin.com/api)
+ 
+ ### Installation
+ 
+ Add this to your Cargo.toml `pastebin_rust_api = "0.2.11"` under `[dependencies]`
 
  ## Getting started
 
