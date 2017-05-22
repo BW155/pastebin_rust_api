@@ -1,6 +1,6 @@
 [package]
 name = "pastebin_rust_api"
-version = "0.4.11"
+version = "0.4.12"
 authors = ["DerUberCatman <b.wisman155@gmail.com>"]
 exclude = ["tools"]
 publish = true
