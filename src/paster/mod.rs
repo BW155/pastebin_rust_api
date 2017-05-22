@@ -10,6 +10,7 @@ use objects::{PastebinMessage, Paste};
 use std::io::Read;
 use std::env;
 use std::fs::File;
+use std::path::Path;
 
 pub mod access;
 pub mod expiration;
@@ -35,7 +36,7 @@ impl Paster {
 
     /// Pastes the content of your file to pastebin.
     pub fn paste_from_file(&self,
-                           file_path: &str,
+                           file_path: &Path,
                            access: Option<&Access>,
                            name: Option<&str>,
                            expiration: Option<&Expiration>,

@@ -3,6 +3,7 @@ extern crate pastebin_rust_api;
 #[cfg(test)]
 mod tests {
     use pastebin_rust_api::{Paster, Access, Expiration, Format};
+    use std::path::Path;
 
     #[test]
     fn test_post() {
@@ -51,7 +52,8 @@ mod tests {
     #[test]
     fn test_file_post() {
         let paster = Paster::new(None);
-        let response = paster.paste_from_file("test.html",
+        let path = Path::new("test.html");
+        let response = paster.paste_from_file(&path,
                                               Some(&Access::Unlisted),
                                               Some("TestHtml"),
                                               Some(&Expiration::TenMinutes),
