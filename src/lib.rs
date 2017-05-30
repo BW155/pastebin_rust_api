@@ -24,7 +24,7 @@
 //!     if response.is_ok() {
 //!         if let Some(paste) = response.ok() {
 //!             // If everything is OK, you can get the url to your code here.
-//!             println!("{}", paste.content);
+//!             println!("{}", paste);
 //!         }
 //!     }
 //! }

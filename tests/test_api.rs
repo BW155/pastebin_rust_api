@@ -16,7 +16,7 @@ mod tests {
                                     None);
         assert!(response.is_ok());
         if let Some(message) = response.ok() {
-            println!("URL: {}", message.content);
+            println!("URL: {}", message);
         }
     }
 
@@ -26,7 +26,7 @@ mod tests {
         let response = paster.login(None, None);
         assert!(response.is_ok());
         if let Some(user_key) = response.ok() {
-            println!("user_key: {}", user_key.content);
+            println!("user_key: {}", user_key);
         }
     }
 
@@ -41,10 +41,10 @@ mod tests {
                                             Some("TestHtml"),
                                             Some(&Expiration::TenMinutes),
                                             Some(&Format::HTML5),
-                                            Some(&user_key.content));
+                                            Some(&user_key));
             assert!(url_response.is_ok());
             if let Some(message) = url_response.ok() {
-                println!("URL: {}", message.content);
+                println!("URL: {}", message);
             }
         }
     }
@@ -61,7 +61,7 @@ mod tests {
                                               None);
         assert!(response.is_ok());
         if let Some(message) = response.ok() {
-            println!("URL: {}", message.content);
+            println!("URL: {}", message);
         }
     }
 
@@ -72,6 +72,20 @@ mod tests {
         assert!(trending.is_ok());
         if let Some(trending) = trending.ok() {
             println!("URL: {}", trending[0].url);
+        }
+    }
+
+    #[test]
+    fn test_my_posts() {
+        let paster = Paster::new(None);
+        let user_key_response = paster.login(None, None);
+        assert!(user_key_response.is_ok());
+        if let Some(user_key) = user_key_response.ok() {
+            let pastes = paster.get_my_posts(&user_key, 100);
+            assert!(pastes.is_ok());
+            if let Some(pastes) = pastes.ok() {
+                println!("paste count: {}", pastes.len());
+            }
         }
     }
 }

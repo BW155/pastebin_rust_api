@@ -1,11 +1,11 @@
 use reqwest;
-use treexml::Document;
+use treexml::{Document, Element};
 
 use self::access::{Access, get_access};
 use self::expiration::{Expiration, get_expiration};
 use self::format::{Format, get_format};
 use construct_api_url;
-use objects::{PastebinMessage, Paste};
+use objects::Paste;
 
 use std::io::Read;
 use std::env;
@@ -42,7 +42,7 @@ impl Paster {
                            expiration: Option<&Expiration>,
                            format: Option<&Format>,
                            user_key: Option<&str>)
-                           -> Result<PastebinMessage> {
+                           -> Result<String> {
         let mut f = File::open(file_path)?;
         let mut code = String::new();
         f.read_to_string(&mut code)?;
@@ -57,7 +57,7 @@ impl Paster {
                  expiration: Option<&Expiration>,
                  format: Option<&Format>,
                  user_key: Option<&str>)
-                 -> Result<PastebinMessage> {
+                 -> Result<String> {
         let path = ["api_post.php"];
         let url = construct_api_url(&path);
         let name = name.unwrap_or("");
@@ -82,7 +82,7 @@ impl Paster {
     pub fn login(&self,
                  username: Option<String>,
                  password: Option<String>)
-                 -> Result<PastebinMessage> {
+                 -> Result<String> {
         let path = ["api_login.php"];
         let url = construct_api_url(&path);
         let dev_key: &str = &self.developer_key;
@@ -101,20 +101,44 @@ impl Paster {
         self.send_post_request(&url, &params)
     }
 
+    pub fn get_my_posts(&self, user_key: &str, result_limit: i64) -> Result<Vec<Paste>> {
+        let path = ["api_post.php"];
+        let url = construct_api_url(&path);
+        let dev_key: &str = &self.developer_key;
+        let result_limit: &str = &format!("{}", result_limit);
+
+        let params = [("api_option", "list"),
+                      ("api_user_key", user_key),
+                      ("api_result_limit", result_limit),
+                      ("api_dev_key", dev_key)];
+        let mut xml: String = self.send_post_request(&url, &params)?;
+        xml.insert_str(0, "<root>");
+        xml.push_str("</root>");
+        let doc = Document::parse(xml.as_bytes()).unwrap_or(Document::new());
+        let root = doc.root.unwrap();
+        let pastes = self.process_xml_pastes(root);
+        Ok(pastes)
+    }
+
     /// Returns Vector of Paste objects
     pub fn get_trending_posts(&self) -> Result<Vec<Paste>> {
         let path = ["api_post.php"];
         let url = construct_api_url(&path);
         let dev_key: &str = &self.developer_key;
 
-        let params = [("api_option", "trends"), ("api_dev_key", dev_key)];
+        let params = [("api_option", "trends"),
+                      ("api_dev_key", dev_key)];
         let mut xml: String = self.send_post_request(&url, &params)
-            .map(|c| c.content)
-            .unwrap_or(String::new());
+                                  .unwrap_or(String::new());
         xml.insert_str(0, "<root>");
         xml.push_str("</root>");
         let doc = Document::parse(xml.as_bytes()).unwrap_or(Document::new());
         let root = doc.root.unwrap();
+        let pastes = self.process_xml_pastes(root);
+        Ok(pastes)
+    }
+
+    fn process_xml_pastes(&self, root: Element) -> Vec<Paste> {
         let mut pastes = Vec::new();
         for i in root.children {
             let key = i.find_child(|e| e.name == "paste_key")
@@ -169,11 +193,11 @@ impl Paster {
                                    hits);
             pastes.push(paste);
         }
-        Ok(pastes)
+        pastes
     }
 
-    /// sends pastebin request, returns `PastebinMessage` on succeed or an `Error` on fail.
-    fn send_post_request(&self, url: &str, params: &[(&str, &str)]) -> Result<PastebinMessage> {
+    /// sends pastebin request, returns `String` on succeed or an `Error` on fail.
+    fn send_post_request(&self, url: &str, params: &[(&str, &str)]) -> Result<String> {
         let client = reqwest::Client::new().unwrap();
         let mut res = client.post(url).form(&params).send()?;
         assert!(res.status().is_success());
