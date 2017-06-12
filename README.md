@@ -1,6 +1,6 @@
  # Pastebin Rust Api
 
- Wrapper for the [Pastebin Api](https://pastebin.com/api)
+ A Rust wrapper for the [Pastebin Api](https://pastebin.com/api)
  
  ### Installation
  
