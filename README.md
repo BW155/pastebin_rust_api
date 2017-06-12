@@ -10,7 +10,7 @@
 
  Simple usage of `Paster`:
 
- ```
+ ```Rust
  extern crate pastebin_rust_api;
  use pastebin_rust_api::{Paster, Access, Format, Expiration};
 
