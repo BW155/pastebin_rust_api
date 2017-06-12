@@ -32,3 +32,6 @@
  }
 
  ```
+ 
+ If you want to see examples for all methods, 
+ check the [test folder](https://github.com/TheUberCatman/pastebin_rust_api/tree/master/tests).
