@@ -37,10 +37,10 @@ impl Paster {
     /// Pastes the content of your file to pastebin.
     pub fn paste_from_file(&self,
                            file_path: &Path,
-                           access: Option<&Access>,
+                           access: &Access,
                            name: Option<&str>,
-                           expiration: Option<&Expiration>,
-                           format: Option<&Format>,
+                           expiration: &Expiration,
+                           format: &Format>,
                            user_key: Option<&str>)
                            -> Result<String> {
         let mut f = File::open(file_path)?;
@@ -52,18 +52,18 @@ impl Paster {
     /// Pastes your content to pastebin.
     pub fn paste(&self,
                  code: &str,
-                 access: Option<&Access>,
+                 access: &Access,
                  name: Option<&str>,
-                 expiration: Option<&Expiration>,
-                 format: Option<&Format>,
+                 expiration: &Expiration,
+                 format: &Format,
                  user_key: Option<&str>)
                  -> Result<String> {
         let path = ["api_post.php"];
         let url = construct_api_url(&path);
         let name = name.unwrap_or("");
-        let access = access.map(|a| get_access(a)).unwrap_or("");
-        let expiration = expiration.map(|e| get_expiration(e)).unwrap_or("");
-        let format = format.map(|f| get_format(f)).unwrap_or("");
+        let access = get_access(access);
+        let expiration = get_expiration(expiration);
+        let format = get_format(format);
         let dev_key = &self.developer_key;
         let user_key = user_key.unwrap_or("");
 
