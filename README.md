@@ -1,6 +1,6 @@
  # Pastebin Rust Api
 
- Wrapper for the [Pastebin Api](https://pastebin.com/api)
+ A Rust wrapper for the [Pastebin Api](https://pastebin.com/api)
  
  ### Installation
  
@@ -10,7 +10,7 @@
 
  Simple usage of `Paster`:
 
- ```
+ ```Rust
  extern crate pastebin_rust_api;
  use pastebin_rust_api::{Paster, Access, Format, Expiration};
 
@@ -32,3 +32,6 @@
  }
 
  ```
+ 
+ If you want to see examples for all methods, 
+ check the [test folder](https://github.com/TheUberCatman/pastebin_rust_api/tree/master/tests).
