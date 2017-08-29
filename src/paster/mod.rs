@@ -40,7 +40,7 @@ impl Paster {
                            access: &Access,
                            name: Option<&str>,
                            expiration: &Expiration,
-                           format: &Format>,
+                           format: &Format,
                            user_key: Option<&str>)
                            -> Result<String> {
         let mut f = File::open(file_path)?;

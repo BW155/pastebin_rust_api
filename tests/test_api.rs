@@ -9,10 +9,10 @@ mod tests {
     fn test_post() {
         let paster = Paster::new(None);
         let response = paster.paste("<html></html>",
-                                    Some(&Access::Unlisted),
+                                    &Access::Unlisted,
                                     Some("TestHtml"),
-                                    Some(&Expiration::TenMinutes),
-                                    Some(&Format::HTML5),
+                                    &Expiration::TenMinutes,
+                                    &Format::HTML5,
                                     None);
         assert!(response.is_ok());
         if let Some(message) = response.ok() {
@@ -37,10 +37,10 @@ mod tests {
         assert!(user_key_response.is_ok());
         if let Some(user_key) = user_key_response.ok() {
             let url_response = paster.paste("<html></html>",
-                                            Some(&Access::Unlisted),
+                                            &Access::Unlisted,
                                             Some("TestHtml"),
-                                            Some(&Expiration::TenMinutes),
-                                            Some(&Format::HTML5),
+                                            &Expiration::TenMinutes,
+                                            &Format::HTML5,
                                             Some(&user_key));
             assert!(url_response.is_ok());
             if let Some(message) = url_response.ok() {
@@ -54,10 +54,10 @@ mod tests {
         let paster = Paster::new(None);
         let path = Path::new("test.html");
         let response = paster.paste_from_file(&path,
-                                              Some(&Access::Unlisted),
+                                              &Access::Unlisted,
                                               Some("TestHtml"),
-                                              Some(&Expiration::TenMinutes),
-                                              Some(&Format::HTML5),
+                                              &Expiration::TenMinutes,
+                                              &Format::HTML5,
                                               None);
         assert!(response.is_ok());
         if let Some(message) = response.ok() {
