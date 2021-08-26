@@ -149,7 +149,7 @@ impl Paster {
                 .map(|k| k.clone())
                 .map(|k| k.text.unwrap_or(String::new()))
                 .unwrap();
-            let title = i.find_child(|e| e.name == "paste_date")
+            let title = i.find_child(|e| e.name == "paste_title")
                 .map(|k| k.clone())
                 .map(|k| k.text.unwrap_or(String::new()))
                 .unwrap();
